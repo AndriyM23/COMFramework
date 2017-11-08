@@ -1,0 +1,26 @@
+The COM framework can be used to create Windows COM Components and their carriers (COM servers).
+The creation of framework is the result of reading book "Inside COM", 2nd edition, Dale Rodgerson.
+During reading the book, I made my own examples for each chapter, and finally, on chapter 9 created this framework.
+It differs greatly from the one, proposed by the book's author. The framework project is named COMComponentBasic.
+
+COM Framework features
+I dicided to omit multiple inheritance of COM interfaces in main C++ class of a COM component.
+Instead, each COM interface is implemented by it's separate C++ class (SubComponentBase), which is a part of the main COM component class. 
+This gives more flexibility and structurization for further COM component development.
+Also, truly separate reference counting is supported, which gives possibility to acquire and release resuources for each COM interface when necessary.
+Also, framework supports COM components inclusion, and aggregation.
+Moreover, COM component, based on this framework, can aggregate other COM components, which are also aggregates of other COM components.
+Of course, other COM components, which either aggregate our framework-based COM component, or are aggregated by it, don't have to be based on this framework.
+A COM component based on this framework can include multiple other interfaces, but can aggregate only one. Depth of aggregation is unlimited.
+The framework pulls on itself all COM machinery, giving possibility to concentrate on component development itself (see how simple COMComponents.cpp file is).
+Besides, comfortable callbacks for subclasses are foreseen for resources management.
+
+For simplifying COM clients development, added implementation of smart pointer to COM interfaces (IComPtr.h).
+This is proposed by Dale Rdgerson in Chapter 9, and many advices have been taken from article by Kenny Kerr "COM Smart Pointers Revisited":
+https://msdn.microsoft.com/en-us/magazine/dn904668.aspx
+
+Also an application for managing COM categories is given (after material in Cahpter 6): COMCategoriesViewer.
+
+Small test app is given (ClientBasedOnCOMLibrary), which is a COM client of an inprocess COM server. It uses IComPtr.
+
+Further I am planning to extend the project with DCOM (for local servers and inproc servers).
